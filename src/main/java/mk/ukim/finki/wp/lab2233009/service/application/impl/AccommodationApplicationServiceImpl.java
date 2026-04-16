@@ -7,6 +7,7 @@ import mk.ukim.finki.wp.lab2233009.model.domain.enums.Category;
 import mk.ukim.finki.wp.lab2233009.model.dto.CreateAccommodationDto;
 import mk.ukim.finki.wp.lab2233009.model.dto.DisplayAccommodationDto;
 import mk.ukim.finki.wp.lab2233009.model.exception.HostNotFoundException;
+import mk.ukim.finki.wp.lab2233009.model.views.AccommodationCategoryStatsView;
 import mk.ukim.finki.wp.lab2233009.model.views.AccommodationExtendedView;
 import mk.ukim.finki.wp.lab2233009.model.views.AccommodationShortView;
 import mk.ukim.finki.wp.lab2233009.service.application.AccommodationApplicationService;
@@ -85,6 +86,11 @@ public class AccommodationApplicationServiceImpl implements AccommodationApplica
     @Override
     public List<AccommodationExtendedView> findAllExtendedViews() {
         return accommodationService.findAllExtendedViews();
+    }
+
+    @Override
+    public List<AccommodationCategoryStatsView> findCategoryStats() {
+        return accommodationService.findCategoryStats();
     }
 
     @Override

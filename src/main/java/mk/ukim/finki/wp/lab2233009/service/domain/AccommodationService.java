@@ -2,6 +2,7 @@ package mk.ukim.finki.wp.lab2233009.service.domain;
 
 import mk.ukim.finki.wp.lab2233009.model.domain.Accommodation;
 import mk.ukim.finki.wp.lab2233009.model.domain.enums.Category;
+import mk.ukim.finki.wp.lab2233009.model.views.AccommodationCategoryStatsView;
 import mk.ukim.finki.wp.lab2233009.model.views.AccommodationExtendedView;
 import mk.ukim.finki.wp.lab2233009.model.views.AccommodationShortView;
 import org.springframework.data.domain.Page;
@@ -26,6 +27,8 @@ public interface AccommodationService {
     List<AccommodationShortView> findAllShortViews();
 
     List<AccommodationExtendedView> findAllExtendedViews();
+
+    List<AccommodationCategoryStatsView> findCategoryStats();
 
     Optional<Accommodation> setRented(Long id);
 }

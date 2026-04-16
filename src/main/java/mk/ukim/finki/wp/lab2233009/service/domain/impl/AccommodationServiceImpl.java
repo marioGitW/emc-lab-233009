@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Optional;
 import mk.ukim.finki.wp.lab2233009.model.domain.Accommodation;
 import mk.ukim.finki.wp.lab2233009.model.domain.enums.Category;
+import mk.ukim.finki.wp.lab2233009.model.views.AccommodationCategoryStatsView;
 import mk.ukim.finki.wp.lab2233009.model.views.AccommodationExtendedView;
 import mk.ukim.finki.wp.lab2233009.model.views.AccommodationShortView;
+import mk.ukim.finki.wp.lab2233009.repository.AccommodationCategoryStatsViewRepository;
 import mk.ukim.finki.wp.lab2233009.repository.AccommodationExtendedViewRepository;
 import mk.ukim.finki.wp.lab2233009.repository.AccommodationRepository;
 import mk.ukim.finki.wp.lab2233009.repository.AccommodationShortViewRepository;
@@ -21,15 +23,18 @@ public class AccommodationServiceImpl implements AccommodationService {
     private final AccommodationRepository accommodationRepository;
     private final AccommodationShortViewRepository accommodationShortViewRepository;
     private final AccommodationExtendedViewRepository accommodationExtendedViewRepository;
+    private final AccommodationCategoryStatsViewRepository accommodationCategoryStatsViewRepository;
 
     public AccommodationServiceImpl(
             AccommodationRepository accommodationRepository,
             AccommodationShortViewRepository accommodationShortViewRepository,
-            AccommodationExtendedViewRepository accommodationExtendedViewRepository
+            AccommodationExtendedViewRepository accommodationExtendedViewRepository,
+            AccommodationCategoryStatsViewRepository accommodationCategoryStatsViewRepository
     ) {
         this.accommodationRepository = accommodationRepository;
         this.accommodationShortViewRepository = accommodationShortViewRepository;
         this.accommodationExtendedViewRepository = accommodationExtendedViewRepository;
+        this.accommodationCategoryStatsViewRepository = accommodationCategoryStatsViewRepository;
     }
 
     @Override
@@ -116,6 +121,11 @@ public class AccommodationServiceImpl implements AccommodationService {
     @Override
     public List<AccommodationExtendedView> findAllExtendedViews() {
         return accommodationExtendedViewRepository.findAll(Sort.by("id"));
+    }
+
+    @Override
+    public List<AccommodationCategoryStatsView> findCategoryStats() {
+        return accommodationCategoryStatsViewRepository.findAll(Sort.by("category"));
     }
 
     @Override

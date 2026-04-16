@@ -3,6 +3,7 @@ package mk.ukim.finki.wp.lab2233009.service.application;
 import mk.ukim.finki.wp.lab2233009.model.dto.CreateAccommodationDto;
 import mk.ukim.finki.wp.lab2233009.model.dto.DisplayAccommodationDto;
 import mk.ukim.finki.wp.lab2233009.model.domain.enums.Category;
+import mk.ukim.finki.wp.lab2233009.model.views.AccommodationCategoryStatsView;
 import mk.ukim.finki.wp.lab2233009.model.views.AccommodationExtendedView;
 import mk.ukim.finki.wp.lab2233009.model.views.AccommodationShortView;
 import org.springframework.data.domain.Page;
@@ -29,6 +30,8 @@ public interface AccommodationApplicationService {
     List<AccommodationShortView> findAllShortViews();
 
     List<AccommodationExtendedView> findAllExtendedViews();
+
+    List<AccommodationCategoryStatsView> findCategoryStats();
 
     Optional<DisplayAccommodationDto> setRented(Long id);
 }

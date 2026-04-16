@@ -5,6 +5,7 @@ import java.util.Locale;
 import mk.ukim.finki.wp.lab2233009.model.domain.enums.Category;
 import mk.ukim.finki.wp.lab2233009.model.dto.CreateAccommodationDto;
 import mk.ukim.finki.wp.lab2233009.model.dto.DisplayAccommodationDto;
+import mk.ukim.finki.wp.lab2233009.model.views.AccommodationCategoryStatsView;
 import mk.ukim.finki.wp.lab2233009.service.application.AccommodationApplicationService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -87,6 +88,11 @@ public class AccommodationController {
             case "extended" -> ResponseEntity.ok(accommodationApplicationService.findAllExtendedViews());
             default -> ResponseEntity.badRequest().build();
         };
+    }
+
+    @GetMapping("/stats/categories")
+    public ResponseEntity<List<AccommodationCategoryStatsView>> findCategoryStats() {
+        return ResponseEntity.ok(accommodationApplicationService.findCategoryStats());
     }
 
     @PutMapping("/{id}/rent")
