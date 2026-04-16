@@ -4,7 +4,11 @@ import java.util.List;
 import java.util.Optional;
 import mk.ukim.finki.wp.lab2233009.model.domain.Accommodation;
 import mk.ukim.finki.wp.lab2233009.model.domain.enums.Category;
+import mk.ukim.finki.wp.lab2233009.model.views.AccommodationExtendedView;
+import mk.ukim.finki.wp.lab2233009.model.views.AccommodationShortView;
+import mk.ukim.finki.wp.lab2233009.repository.AccommodationExtendedViewRepository;
 import mk.ukim.finki.wp.lab2233009.repository.AccommodationRepository;
+import mk.ukim.finki.wp.lab2233009.repository.AccommodationShortViewRepository;
 import mk.ukim.finki.wp.lab2233009.service.domain.AccommodationService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,9 +19,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccommodationServiceImpl implements AccommodationService {
     private final AccommodationRepository accommodationRepository;
+    private final AccommodationShortViewRepository accommodationShortViewRepository;
+    private final AccommodationExtendedViewRepository accommodationExtendedViewRepository;
 
-    public AccommodationServiceImpl(AccommodationRepository accommodationRepository) {
+    public AccommodationServiceImpl(
+            AccommodationRepository accommodationRepository,
+            AccommodationShortViewRepository accommodationShortViewRepository,
+            AccommodationExtendedViewRepository accommodationExtendedViewRepository
+    ) {
         this.accommodationRepository = accommodationRepository;
+        this.accommodationShortViewRepository = accommodationShortViewRepository;
+        this.accommodationExtendedViewRepository = accommodationExtendedViewRepository;
     }
 
     @Override
@@ -94,6 +106,16 @@ public class AccommodationServiceImpl implements AccommodationService {
     @Override
     public List<Accommodation> findByRented(Boolean rented) {
         return accommodationRepository.findByRented(rented);
+    }
+
+    @Override
+    public List<AccommodationShortView> findAllShortViews() {
+        return accommodationShortViewRepository.findAll(Sort.by("id"));
+    }
+
+    @Override
+    public List<AccommodationExtendedView> findAllExtendedViews() {
+        return accommodationExtendedViewRepository.findAll(Sort.by("id"));
     }
 
     @Override

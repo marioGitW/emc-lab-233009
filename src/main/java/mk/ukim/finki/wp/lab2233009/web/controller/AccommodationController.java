@@ -1,6 +1,7 @@
 package mk.ukim.finki.wp.lab2233009.web.controller;
 
 import jakarta.validation.Valid;
+import java.util.Locale;
 import mk.ukim.finki.wp.lab2233009.model.domain.enums.Category;
 import mk.ukim.finki.wp.lab2233009.model.dto.CreateAccommodationDto;
 import mk.ukim.finki.wp.lab2233009.model.dto.DisplayAccommodationDto;
@@ -76,6 +77,16 @@ public class AccommodationController {
     @GetMapping("/rented/{rented}")
     public ResponseEntity<List<DisplayAccommodationDto>> findByRented(@PathVariable Boolean rented) {
         return ResponseEntity.ok(accommodationApplicationService.findByRented(rented));
+    }
+
+    @GetMapping("/projections")
+    public ResponseEntity<List<?>> findAllByProjection(@RequestParam(defaultValue = "short") String view) {
+        String normalizedView = view.trim().toLowerCase(Locale.ROOT);
+        return switch (normalizedView) {
+            case "short" -> ResponseEntity.ok(accommodationApplicationService.findAllShortViews());
+            case "extended" -> ResponseEntity.ok(accommodationApplicationService.findAllExtendedViews());
+            default -> ResponseEntity.badRequest().build();
+        };
     }
 
     @PutMapping("/{id}/rent")

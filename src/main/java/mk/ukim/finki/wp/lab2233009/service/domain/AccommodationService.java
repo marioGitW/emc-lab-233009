@@ -2,6 +2,8 @@ package mk.ukim.finki.wp.lab2233009.service.domain;
 
 import mk.ukim.finki.wp.lab2233009.model.domain.Accommodation;
 import mk.ukim.finki.wp.lab2233009.model.domain.enums.Category;
+import mk.ukim.finki.wp.lab2233009.model.views.AccommodationExtendedView;
+import mk.ukim.finki.wp.lab2233009.model.views.AccommodationShortView;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -20,6 +22,10 @@ public interface AccommodationService {
     Optional<Accommodation> deleteById(Long id);
 
     List<Accommodation> findByRented(Boolean rented);
+
+    List<AccommodationShortView> findAllShortViews();
+
+    List<AccommodationExtendedView> findAllExtendedViews();
 
     Optional<Accommodation> setRented(Long id);
 }

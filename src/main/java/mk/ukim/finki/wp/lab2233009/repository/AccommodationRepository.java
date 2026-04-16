@@ -1,5 +1,6 @@
 package mk.ukim.finki.wp.lab2233009.repository;
 
+import java.util.List;
 import mk.ukim.finki.wp.lab2233009.model.domain.Accommodation;
 import mk.ukim.finki.wp.lab2233009.model.domain.enums.Category;
 import org.springframework.data.domain.Page;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AccommodationRepository extends JpaRepository<Accommodation, Long> {
-	java.util.List<Accommodation> findByRented(Boolean rented);
+	List<Accommodation> findByRented(Boolean rented);
 
 	@Query("""
 			select a

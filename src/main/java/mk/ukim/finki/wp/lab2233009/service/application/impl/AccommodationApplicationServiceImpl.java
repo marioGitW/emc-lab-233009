@@ -7,6 +7,8 @@ import mk.ukim.finki.wp.lab2233009.model.domain.enums.Category;
 import mk.ukim.finki.wp.lab2233009.model.dto.CreateAccommodationDto;
 import mk.ukim.finki.wp.lab2233009.model.dto.DisplayAccommodationDto;
 import mk.ukim.finki.wp.lab2233009.model.exception.HostNotFoundException;
+import mk.ukim.finki.wp.lab2233009.model.views.AccommodationExtendedView;
+import mk.ukim.finki.wp.lab2233009.model.views.AccommodationShortView;
 import mk.ukim.finki.wp.lab2233009.service.application.AccommodationApplicationService;
 import mk.ukim.finki.wp.lab2233009.service.domain.AccommodationService;
 import mk.ukim.finki.wp.lab2233009.service.domain.HostService;
@@ -74,6 +76,17 @@ public class AccommodationApplicationServiceImpl implements AccommodationApplica
     public List<DisplayAccommodationDto> findByRented(Boolean rented) {
         return DisplayAccommodationDto.from(accommodationService.findByRented(rented));
     }
+
+    @Override
+    public List<AccommodationShortView> findAllShortViews() {
+        return accommodationService.findAllShortViews();
+    }
+
+    @Override
+    public List<AccommodationExtendedView> findAllExtendedViews() {
+        return accommodationService.findAllExtendedViews();
+    }
+
     @Override
     public Optional<DisplayAccommodationDto> setRented(Long id) {
         return accommodationService.setRented(id).map(DisplayAccommodationDto::from);
