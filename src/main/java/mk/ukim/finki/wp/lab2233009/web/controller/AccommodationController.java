@@ -3,6 +3,7 @@ package mk.ukim.finki.wp.lab2233009.web.controller;
 import jakarta.validation.Valid;
 import java.util.Locale;
 import mk.ukim.finki.wp.lab2233009.model.domain.enums.Category;
+import mk.ukim.finki.wp.lab2233009.model.dto.DisplayAccommodationActivityLogDto;
 import mk.ukim.finki.wp.lab2233009.model.dto.CreateAccommodationDto;
 import mk.ukim.finki.wp.lab2233009.model.dto.DisplayAccommodationDto;
 import mk.ukim.finki.wp.lab2233009.model.views.AccommodationCategoryStatsView;
@@ -93,6 +94,11 @@ public class AccommodationController {
     @GetMapping("/stats/categories")
     public ResponseEntity<List<AccommodationCategoryStatsView>> findCategoryStats() {
         return ResponseEntity.ok(accommodationApplicationService.findCategoryStats());
+    }
+
+    @GetMapping("/activity-logs")
+    public ResponseEntity<Page<DisplayAccommodationActivityLogDto>> findActivityLogs(Pageable pageable) {
+        return ResponseEntity.ok(accommodationApplicationService.findActivityLogs(pageable));
     }
 
     @PutMapping("/{id}/rent")

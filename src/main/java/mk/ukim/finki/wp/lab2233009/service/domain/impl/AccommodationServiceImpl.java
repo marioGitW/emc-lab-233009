@@ -3,11 +3,13 @@ package mk.ukim.finki.wp.lab2233009.service.domain.impl;
 import java.util.List;
 import java.util.Optional;
 import mk.ukim.finki.wp.lab2233009.model.domain.Accommodation;
+import mk.ukim.finki.wp.lab2233009.model.domain.AccommodationActivityLog;
 import mk.ukim.finki.wp.lab2233009.model.domain.enums.Category;
 import mk.ukim.finki.wp.lab2233009.model.events.AccommodationRentedEvent;
 import mk.ukim.finki.wp.lab2233009.model.views.AccommodationCategoryStatsView;
 import mk.ukim.finki.wp.lab2233009.model.views.AccommodationExtendedView;
 import mk.ukim.finki.wp.lab2233009.model.views.AccommodationShortView;
+import mk.ukim.finki.wp.lab2233009.repository.AccommodationActivityLogRepository;
 import mk.ukim.finki.wp.lab2233009.repository.AccommodationCategoryStatsViewRepository;
 import mk.ukim.finki.wp.lab2233009.repository.AccommodationExtendedViewRepository;
 import mk.ukim.finki.wp.lab2233009.repository.AccommodationRepository;
@@ -27,6 +29,7 @@ public class AccommodationServiceImpl implements AccommodationService {
     private final AccommodationShortViewRepository accommodationShortViewRepository;
     private final AccommodationExtendedViewRepository accommodationExtendedViewRepository;
     private final AccommodationCategoryStatsViewRepository accommodationCategoryStatsViewRepository;
+    private final AccommodationActivityLogRepository accommodationActivityLogRepository;
     private final ApplicationEventPublisher applicationEventPublisher;
 
     public AccommodationServiceImpl(
@@ -34,12 +37,14 @@ public class AccommodationServiceImpl implements AccommodationService {
             AccommodationShortViewRepository accommodationShortViewRepository,
             AccommodationExtendedViewRepository accommodationExtendedViewRepository,
             AccommodationCategoryStatsViewRepository accommodationCategoryStatsViewRepository,
+            AccommodationActivityLogRepository accommodationActivityLogRepository,
             ApplicationEventPublisher applicationEventPublisher
     ) {
         this.accommodationRepository = accommodationRepository;
         this.accommodationShortViewRepository = accommodationShortViewRepository;
         this.accommodationExtendedViewRepository = accommodationExtendedViewRepository;
         this.accommodationCategoryStatsViewRepository = accommodationCategoryStatsViewRepository;
+        this.accommodationActivityLogRepository = accommodationActivityLogRepository;
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
@@ -132,6 +137,11 @@ public class AccommodationServiceImpl implements AccommodationService {
     @Override
     public List<AccommodationCategoryStatsView> findCategoryStats() {
         return accommodationCategoryStatsViewRepository.findAll(Sort.by("category"));
+    }
+
+    @Override
+    public Page<AccommodationActivityLog> findActivityLogs(Pageable pageable) {
+        return accommodationActivityLogRepository.findAll(pageable);
     }
 
     @Override

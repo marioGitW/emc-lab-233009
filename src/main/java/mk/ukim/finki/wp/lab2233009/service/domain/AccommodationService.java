@@ -1,6 +1,7 @@
 package mk.ukim.finki.wp.lab2233009.service.domain;
 
 import mk.ukim.finki.wp.lab2233009.model.domain.Accommodation;
+import mk.ukim.finki.wp.lab2233009.model.domain.AccommodationActivityLog;
 import mk.ukim.finki.wp.lab2233009.model.domain.enums.Category;
 import mk.ukim.finki.wp.lab2233009.model.views.AccommodationCategoryStatsView;
 import mk.ukim.finki.wp.lab2233009.model.views.AccommodationExtendedView;
@@ -29,6 +30,8 @@ public interface AccommodationService {
     List<AccommodationExtendedView> findAllExtendedViews();
 
     List<AccommodationCategoryStatsView> findCategoryStats();
+
+    Page<AccommodationActivityLog> findActivityLogs(Pageable pageable);
 
     Optional<Accommodation> setRented(Long id);
 }
