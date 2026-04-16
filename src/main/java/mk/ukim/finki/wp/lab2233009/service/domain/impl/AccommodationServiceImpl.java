@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import mk.ukim.finki.wp.lab2233009.model.domain.Accommodation;
 import mk.ukim.finki.wp.lab2233009.model.domain.enums.Category;
+import mk.ukim.finki.wp.lab2233009.model.events.AccommodationRentedEvent;
 import mk.ukim.finki.wp.lab2233009.model.views.AccommodationCategoryStatsView;
 import mk.ukim.finki.wp.lab2233009.model.views.AccommodationExtendedView;
 import mk.ukim.finki.wp.lab2233009.model.views.AccommodationShortView;
@@ -12,11 +13,13 @@ import mk.ukim.finki.wp.lab2233009.repository.AccommodationExtendedViewRepositor
 import mk.ukim.finki.wp.lab2233009.repository.AccommodationRepository;
 import mk.ukim.finki.wp.lab2233009.repository.AccommodationShortViewRepository;
 import mk.ukim.finki.wp.lab2233009.service.domain.AccommodationService;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AccommodationServiceImpl implements AccommodationService {
@@ -24,17 +27,20 @@ public class AccommodationServiceImpl implements AccommodationService {
     private final AccommodationShortViewRepository accommodationShortViewRepository;
     private final AccommodationExtendedViewRepository accommodationExtendedViewRepository;
     private final AccommodationCategoryStatsViewRepository accommodationCategoryStatsViewRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     public AccommodationServiceImpl(
             AccommodationRepository accommodationRepository,
             AccommodationShortViewRepository accommodationShortViewRepository,
             AccommodationExtendedViewRepository accommodationExtendedViewRepository,
-            AccommodationCategoryStatsViewRepository accommodationCategoryStatsViewRepository
+            AccommodationCategoryStatsViewRepository accommodationCategoryStatsViewRepository,
+            ApplicationEventPublisher applicationEventPublisher
     ) {
         this.accommodationRepository = accommodationRepository;
         this.accommodationShortViewRepository = accommodationShortViewRepository;
         this.accommodationExtendedViewRepository = accommodationExtendedViewRepository;
         this.accommodationCategoryStatsViewRepository = accommodationCategoryStatsViewRepository;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     @Override
@@ -129,10 +135,17 @@ public class AccommodationServiceImpl implements AccommodationService {
     }
 
     @Override
+    @Transactional
     public Optional<Accommodation> setRented(Long id) {
         return accommodationRepository.findById(id).map(accommodation -> {
             accommodation.setRented(true);
-            return accommodationRepository.save(accommodation);
+            Accommodation rentedAccommodation = accommodationRepository.save(accommodation);
+            applicationEventPublisher.publishEvent(new AccommodationRentedEvent(
+                    rentedAccommodation.getId(),
+                    rentedAccommodation.getName(),
+                    rentedAccommodation.getNumRooms()
+            ));
+            return rentedAccommodation;
         });
     }
 }
