@@ -1,9 +1,12 @@
 package mk.ukim.finki.wp.lab2233009.web.controller;
 
 import jakarta.validation.Valid;
+import mk.ukim.finki.wp.lab2233009.model.domain.enums.Category;
 import mk.ukim.finki.wp.lab2233009.model.dto.CreateAccommodationDto;
 import mk.ukim.finki.wp.lab2233009.model.dto.DisplayAccommodationDto;
 import mk.ukim.finki.wp.lab2233009.service.application.AccommodationApplicationService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,8 +31,22 @@ public class AccommodationController {
     }
 
     @GetMapping
-    public ResponseEntity<List<DisplayAccommodationDto>> findAll() {
-        return ResponseEntity.ok(accommodationApplicationService.findAll());
+    public ResponseEntity<Page<DisplayAccommodationDto>> findAll(
+            Pageable pageable,
+            @RequestParam(required = false) Category category,
+            @RequestParam(required = false) Long hostId,
+            @RequestParam(required = false) Long countryId,
+            @RequestParam(required = false) Integer numRooms,
+            @RequestParam(required = false) Boolean roomsAvailable
+    ) {
+        return ResponseEntity.ok(accommodationApplicationService.findAll(
+                pageable,
+                category,
+                hostId,
+                countryId,
+                numRooms,
+                roomsAvailable
+        ));
     }
 
     @PostMapping("/add")

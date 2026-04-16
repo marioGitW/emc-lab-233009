@@ -3,8 +3,13 @@ package mk.ukim.finki.wp.lab2233009.service.domain.impl;
 import java.util.List;
 import java.util.Optional;
 import mk.ukim.finki.wp.lab2233009.model.domain.Accommodation;
+import mk.ukim.finki.wp.lab2233009.model.domain.enums.Category;
 import mk.ukim.finki.wp.lab2233009.repository.AccommodationRepository;
 import mk.ukim.finki.wp.lab2233009.service.domain.AccommodationService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,8 +26,43 @@ public class AccommodationServiceImpl implements AccommodationService {
     }
 
     @Override
-    public List<Accommodation> findAll() {
-        return accommodationRepository.findAll();
+    public Page<Accommodation> findAll(
+            Pageable pageable,
+            Category category,
+            Long hostId,
+            Long countryId,
+            Integer numRooms,
+            Boolean roomsAvailable
+    ) {
+        Pageable sanitizedPageable = PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                sanitizeSort(pageable.getSort())
+        );
+        return accommodationRepository.findAllWithFilters(
+                category,
+                hostId,
+                countryId,
+                numRooms,
+                roomsAvailable,
+                sanitizedPageable
+        );
+    }
+
+    private Sort sanitizeSort(Sort sort) {
+        if (sort == null || sort.isUnsorted()) {
+            return Sort.by(Sort.Direction.DESC, "createdAt");
+        }
+
+        List<Sort.Order> allowedOrders = sort.stream()
+                .filter(order -> "name".equals(order.getProperty()) || "createdAt".equals(order.getProperty()))
+                .toList();
+
+        if (allowedOrders.isEmpty()) {
+            return Sort.by(Sort.Direction.DESC, "createdAt");
+        }
+
+        return Sort.by(allowedOrders);
     }
 
     @Override

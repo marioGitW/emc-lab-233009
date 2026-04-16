@@ -2,6 +2,10 @@ package mk.ukim.finki.wp.lab2233009.service.application;
 
 import mk.ukim.finki.wp.lab2233009.model.dto.CreateAccommodationDto;
 import mk.ukim.finki.wp.lab2233009.model.dto.DisplayAccommodationDto;
+import mk.ukim.finki.wp.lab2233009.model.domain.enums.Category;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -10,7 +14,7 @@ public interface AccommodationApplicationService {
 
     Optional<DisplayAccommodationDto> findById(Long id);
 
-    List<DisplayAccommodationDto> findAll();
+    Page<DisplayAccommodationDto> findAll(Pageable pageable, Category category, Long hostId, Long countryId, Integer numRooms, Boolean roomsAvailable);
 
     DisplayAccommodationDto create(CreateAccommodationDto createAccommodationDto);
 

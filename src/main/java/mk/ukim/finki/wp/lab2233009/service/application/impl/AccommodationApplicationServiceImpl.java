@@ -3,12 +3,15 @@ package mk.ukim.finki.wp.lab2233009.service.application.impl;
 import java.util.List;
 import java.util.Optional;
 import mk.ukim.finki.wp.lab2233009.model.domain.Host;
+import mk.ukim.finki.wp.lab2233009.model.domain.enums.Category;
 import mk.ukim.finki.wp.lab2233009.model.dto.CreateAccommodationDto;
 import mk.ukim.finki.wp.lab2233009.model.dto.DisplayAccommodationDto;
 import mk.ukim.finki.wp.lab2233009.model.exception.HostNotFoundException;
 import mk.ukim.finki.wp.lab2233009.service.application.AccommodationApplicationService;
 import mk.ukim.finki.wp.lab2233009.service.domain.AccommodationService;
 import mk.ukim.finki.wp.lab2233009.service.domain.HostService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,8 +32,17 @@ public class AccommodationApplicationServiceImpl implements AccommodationApplica
     }
 
     @Override
-    public List<DisplayAccommodationDto> findAll() {
-        return DisplayAccommodationDto.from(accommodationService.findAll());
+    public Page<DisplayAccommodationDto> findAll(
+            Pageable pageable,
+            Category category,
+            Long hostId,
+            Long countryId,
+            Integer numRooms,
+            Boolean roomsAvailable
+    ) {
+        return accommodationService
+                .findAll(pageable, category, hostId, countryId, numRooms, roomsAvailable)
+                .map(DisplayAccommodationDto::from);
     }
 
     @Override
