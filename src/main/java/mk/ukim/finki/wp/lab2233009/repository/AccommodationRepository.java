@@ -1,10 +1,12 @@
 package mk.ukim.finki.wp.lab2233009.repository;
 
 import java.util.List;
+import java.util.Optional;
 import mk.ukim.finki.wp.lab2233009.model.domain.Accommodation;
 import mk.ukim.finki.wp.lab2233009.model.domain.enums.Category;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,6 +15,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AccommodationRepository extends JpaRepository<Accommodation, Long> {
 	List<Accommodation> findByRented(Boolean rented);
+
+	@EntityGraph(value = "accommodation-host-country-graph")
+	Optional<Accommodation> findWithHostAndCountryById(Long id);
 
 	@Query("""
 			select a
@@ -45,6 +50,7 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
 					)
 			  )
 			""")
+	@EntityGraph(value = "accommodation-host-country-graph")
 	Page<Accommodation> findAllWithFilters(
 			@Param("category") Category category,
 			@Param("hostId") Long hostId,

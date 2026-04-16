@@ -8,6 +8,20 @@ import mk.ukim.finki.wp.lab2233009.model.domain.enums.Category;
 import mk.ukim.finki.wp.lab2233009.model.domain.enums.Condition;
 
 @Entity
+@NamedEntityGraph(
+        name = "accommodation-host-country-graph",
+        attributeNodes = {
+                @NamedAttributeNode(value = "host", subgraph = "host-country-subgraph")
+        },
+        subgraphs = {
+                @NamedSubgraph(
+                        name = "host-country-subgraph",
+                        attributeNodes = {
+                                @NamedAttributeNode("country")
+                        }
+                )
+        }
+)
 @Getter
 @Setter
 @NoArgsConstructor

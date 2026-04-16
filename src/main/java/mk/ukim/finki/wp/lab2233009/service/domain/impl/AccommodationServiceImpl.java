@@ -34,7 +34,7 @@ public class AccommodationServiceImpl implements AccommodationService {
 
     @Override
     public Optional<Accommodation> findById(Long id) {
-        return accommodationRepository.findById(id);
+        return accommodationRepository.findWithHostAndCountryById(id);
     }
 
     @Override
