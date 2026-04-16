@@ -1,0 +1,70 @@
+package mk.ukim.finki.wp.lab2233009.web.controller;
+
+import jakarta.validation.Valid;
+import mk.ukim.finki.wp.lab2233009.model.dto.CreateAccommodationDto;
+import mk.ukim.finki.wp.lab2233009.model.dto.DisplayAccommodationDto;
+import mk.ukim.finki.wp.lab2233009.service.application.AccommodationApplicationService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/accommodations")
+public class AccommodationController {
+
+    private final AccommodationApplicationService accommodationApplicationService;
+
+    public AccommodationController(AccommodationApplicationService accommodationApplicationService) {
+        this.accommodationApplicationService = accommodationApplicationService;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<DisplayAccommodationDto> findById(@PathVariable Long id) {
+        return accommodationApplicationService
+                .findById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping
+    public ResponseEntity<List<DisplayAccommodationDto>> findAll() {
+        return ResponseEntity.ok(accommodationApplicationService.findAll());
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<DisplayAccommodationDto> create(@RequestBody @Valid CreateAccommodationDto createProductDto) {
+        return ResponseEntity.ok(accommodationApplicationService.create(createProductDto));
+    }
+
+    @PutMapping("/{id}/edit")
+    public ResponseEntity<DisplayAccommodationDto> update(
+            @PathVariable Long id,
+            @RequestBody CreateAccommodationDto createProductDto
+    ) {
+        return accommodationApplicationService
+                .update(id, createProductDto)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}/delete")
+    public ResponseEntity<DisplayAccommodationDto> deleteById(@PathVariable Long id) {
+        return accommodationApplicationService
+                .deleteById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/rented/{rented}")
+    public ResponseEntity<List<DisplayAccommodationDto>> findByRented(@PathVariable Boolean rented) {
+        return ResponseEntity.ok(accommodationApplicationService.findByRented(rented));
+    }
+
+    @PutMapping("/{id}/rent")
+    public ResponseEntity<DisplayAccommodationDto> setRented(@PathVariable Long id) {
+        return accommodationApplicationService.setRented(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+}
