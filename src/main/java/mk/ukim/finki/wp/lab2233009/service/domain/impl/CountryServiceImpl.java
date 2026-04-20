@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Optional;
 
 import mk.ukim.finki.wp.lab2233009.model.domain.Country;
+import mk.ukim.finki.wp.lab2233009.model.views.CountryHostCountProjection;
 import mk.ukim.finki.wp.lab2233009.repository.CountryRepository;
 import mk.ukim.finki.wp.lab2233009.service.domain.CountryService;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,11 @@ public class CountryServiceImpl implements CountryService {
     @Override
     public List<Country> findAll() {
         return countryRepository.findAll();
+    }
+
+    @Override
+    public List<CountryHostCountProjection> findAllHostCountProjections() {
+        return countryRepository.findAllHostCountProjections();
     }
 
     @Override

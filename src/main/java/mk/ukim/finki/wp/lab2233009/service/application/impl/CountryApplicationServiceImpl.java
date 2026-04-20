@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import mk.ukim.finki.wp.lab2233009.model.dto.CreateCountryDto;
 import mk.ukim.finki.wp.lab2233009.model.dto.DisplayCountryDto;
+import mk.ukim.finki.wp.lab2233009.model.views.CountryHostCountProjection;
 import mk.ukim.finki.wp.lab2233009.service.application.CountryApplicationService;
 import mk.ukim.finki.wp.lab2233009.service.domain.CountryService;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,11 @@ public class CountryApplicationServiceImpl implements CountryApplicationService 
     @Override
     public List<DisplayCountryDto> findAll() {
         return DisplayCountryDto.from(countryService.findAll());
+    }
+
+    @Override
+    public List<CountryHostCountProjection> findAllHostCountProjections() {
+        return countryService.findAllHostCountProjections();
     }
 
     @Override
