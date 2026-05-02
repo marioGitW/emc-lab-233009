@@ -1,0 +1,39 @@
+import { Box, Container } from '@mui/material';
+import { Outlet } from 'react-router-dom';
+import Navigation from '../components/Navigation.tsx';
+import Footer from '../components/Footer.tsx';
+
+const Layout = () => {
+    return (
+        <Box
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                minHeight: '100vh'
+            }}
+        >
+            {/* Header */}
+            <Navigation />
+
+            {/* Main Content */}
+            <Box
+                component="main"
+                sx={{
+                    flex: 1,
+                    py: 4
+                }}
+            >
+                <Container maxWidth="lg">
+                    <Outlet />
+                </Container>
+            </Box>
+
+            {/* Footer */}
+            <Footer />
+        </Box>
+    );
+};
+
+export default Layout;
+
+

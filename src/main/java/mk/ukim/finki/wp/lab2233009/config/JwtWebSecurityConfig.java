@@ -34,9 +34,19 @@ public class JwtWebSecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000"));
-        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+        corsConfiguration.setAllowedOrigins(List.of(
+                "http://localhost:3000",
+                "http://localhost:3001",
+                "http://localhost:3002",
+                "http://localhost:3003",
+                "http://127.0.0.1:3000",
+                "http://127.0.0.1:3001",
+                "http://127.0.0.1:3002",
+                "http://127.0.0.1:3003"
+        ));
+        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         corsConfiguration.setAllowedHeaders(List.of("*"));
+        corsConfiguration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
         return source;
@@ -76,16 +86,16 @@ public class JwtWebSecurityConfig {
                                 )
                                 .permitAll()
                                 .requestMatchers(
-                                        "/api/user/me"
-                                )
-                                .authenticated()
-                                .requestMatchers(
                                         HttpMethod.GET,
                                         "/api/accommodations/**",
                                         "/api/hosts/**",
                                         "/api/countries/**"
                                 )
-                                .hasRole("USER")
+                                .permitAll()
+                                .requestMatchers(
+                                        "/api/user/me"
+                                )
+                                .authenticated()
                                 .requestMatchers(
                                         HttpMethod.POST,
                                         "/api/accommodations/add",
