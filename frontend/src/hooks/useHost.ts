@@ -10,16 +10,14 @@ interface UseHostState {
 
 const useHost = (id?: number) => {
     const [state, setState] = useState<UseHostState>({
-        loading: !id
+        loading: Boolean(id)
     });
 
     useEffect(() => {
         if (!id) {
-            setState({ loading: false });
             return;
         }
 
-        setState({ loading: true });
         hostApi
             .findById(id)
             .then((response) => {
@@ -41,4 +39,3 @@ const useHost = (id?: number) => {
 };
 
 export default useHost;
-

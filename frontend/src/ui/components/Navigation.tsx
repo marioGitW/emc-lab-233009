@@ -10,6 +10,7 @@ const navigationItems = [
     { label: 'Accommodations', path: '/accommodations' },
     { label: 'Hosts', path: '/hosts' },
     { label: 'Countries', path: '/countries' },
+    { label: 'Users', path: '/users' },
 ];
 
 const Navigation = () => {
@@ -112,6 +113,4 @@ const Navigation = () => {
 };
 
 export default Navigation;
-
-
 

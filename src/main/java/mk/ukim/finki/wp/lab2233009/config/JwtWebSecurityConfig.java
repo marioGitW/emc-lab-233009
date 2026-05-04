@@ -80,6 +80,7 @@ public class JwtWebSecurityConfig {
                         authorizeHttpRequestsCustomizer
                                 .requestMatchers(
                                         "/swagger-ui/**",
+                                        "/swagger-ui.html",
                                         "/v3/api-docs/**",
                                         "/api/user/register",
                                         "/api/user/login"
@@ -89,7 +90,8 @@ public class JwtWebSecurityConfig {
                                         HttpMethod.GET,
                                         "/api/accommodations/**",
                                         "/api/hosts/**",
-                                        "/api/countries/**"
+                                        "/api/countries/**",
+                                        "/api/users/**"
                                 )
                                 .permitAll()
                                 .requestMatchers(

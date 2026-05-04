@@ -54,6 +54,18 @@ const CountryCard = ({ country, onView }: CountryCardProps) => {
                     {country.name}
                 </Typography>
 
+                <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{
+                        fontSize: '0.8rem',
+                        fontWeight: 500,
+                        mb: 1
+                    }}
+                >
+                    {country.continent}
+                </Typography>
+
                 {/* ID */}
                 <Typography
                     variant="body2"
@@ -86,5 +98,4 @@ const CountryCard = ({ country, onView }: CountryCardProps) => {
 };
 
 export default CountryCard;
-
 

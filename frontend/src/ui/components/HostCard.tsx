@@ -1,6 +1,5 @@
 import { Box, Button, Card, CardActions, CardContent, Typography, useTheme } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
-import EmailIcon from '@mui/icons-material/Email';
 import InfoIcon from '@mui/icons-material/Info';
 import type { Host } from '../../api/types/host.ts';
 
@@ -52,49 +51,23 @@ const HostCard = ({ host, onView }: HostCardProps) => {
                             WebkitBoxOrient: 'vertical',
                         }}
                     >
-                        {host.name}
+                        {host.name} {host.surname}
                     </Typography>
                 </Box>
 
-                {/* Email */}
-                <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1.5, mb: 2.5 }}>
-                    <EmailIcon
-                        sx={{
-                            fontSize: '1.2rem',
-                            color: 'text.secondary',
-                            mt: 0.5,
-                            flexShrink: 0
-                        }}
-                    />
-                    <Typography
-                        variant="body2"
-                        color="text.secondary"
-                        sx={{
-                            wordBreak: 'break-all',
-                            fontSize: '0.85rem',
-                            fontWeight: 500
-                        }}
-                    >
-                        {host.email}
-                    </Typography>
-                </Box>
-
-                {/* Country */}
-                {host.country && (
-                    <Typography
-                        variant="body2"
-                        color="text.secondary"
-                        sx={{
-                            fontSize: '0.85rem',
-                            marginTop: 1
-                        }}
-                    >
-                        <Box component="span" sx={{ fontWeight: 700, color: 'text.primary' }}>
-                            Country:
-                        </Box>
-                        {' '}{host.country}
-                    </Typography>
-                )}
+                <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{
+                        fontSize: '0.85rem',
+                        marginTop: 1
+                    }}
+                >
+                    <Box component="span" sx={{ fontWeight: 700, color: 'text.primary' }}>
+                        Country ID:
+                    </Box>
+                    {' '}{host.countryId}
+                </Typography>
             </CardContent>
 
             {/* Actions */}
@@ -117,5 +90,4 @@ const HostCard = ({ host, onView }: HostCardProps) => {
 };
 
 export default HostCard;
-
 

@@ -28,6 +28,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public java.util.List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
+    }
+
+    @Override
     public User register(User user) {
         if (userRepository.existsByUsername(user.getUsername()))
             throw new UsernameAlreadyExistsException(user.getUsername());

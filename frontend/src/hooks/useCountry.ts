@@ -10,16 +10,14 @@ interface UseCountryState {
 
 const useCountry = (id?: number) => {
     const [state, setState] = useState<UseCountryState>({
-        loading: !id
+        loading: Boolean(id)
     });
 
     useEffect(() => {
         if (!id) {
-            setState({ loading: false });
             return;
         }
 
-        setState({ loading: true });
         countryApi
             .findById(id)
             .then((response) => {
@@ -41,4 +39,3 @@ const useCountry = (id?: number) => {
 };
 
 export default useCountry;
-
