@@ -2,6 +2,8 @@ package mk.ukim.finki.wp.lab2233009.config;
 
 import java.util.List;
 import mk.ukim.finki.wp.lab2233009.web.filter.JwtFilter;
+import mk.ukim.finki.wp.lab2233009.web.handler.CustomAccessDeniedHandler;
+import mk.ukim.finki.wp.lab2233009.web.handler.CustomAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
@@ -26,9 +28,15 @@ import org.springframework.http.HttpMethod;
 @EnableMethodSecurity
 public class JwtWebSecurityConfig {
     private final JwtFilter jwtFilter;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
-    public JwtWebSecurityConfig(JwtFilter jwtFilter) {
+    public JwtWebSecurityConfig(JwtFilter jwtFilter,
+            CustomAccessDeniedHandler customAccessDeniedHandler,
+            CustomAuthenticationEntryPoint customAuthenticationEntryPoint) {
         this.jwtFilter = jwtFilter;
+        this.customAccessDeniedHandler = customAccessDeniedHandler;
+        this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
     }
 
     @Bean
@@ -75,6 +83,11 @@ public class JwtWebSecurityConfig {
                 )
                 .headers(headers -> headers
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
+                )
+                .exceptionHandling(exceptionHandling ->
+                        exceptionHandling
+                                .accessDeniedHandler(customAccessDeniedHandler)
+                                .authenticationEntryPoint(customAuthenticationEntryPoint)
                 )
                 .authorizeHttpRequests(authorizeHttpRequestsCustomizer ->
                         authorizeHttpRequestsCustomizer

@@ -12,10 +12,7 @@ const Layout = () => {
                 minHeight: '100vh'
             }}
         >
-            {/* Header */}
             <Navigation />
-
-            {/* Main Content */}
             <Box
                 component="main"
                 sx={{
@@ -26,10 +23,7 @@ const Layout = () => {
                 <Container maxWidth="lg">
                     <Outlet />
                 </Container>
-            </Box>
-
-            {/* Footer */}
-            <Footer />
+            </Box><Footer />
         </Box>
     );
 };

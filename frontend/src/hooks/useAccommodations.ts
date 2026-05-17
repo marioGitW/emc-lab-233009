@@ -1,42 +1,60 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import accommodationApi from '../api/accommodationApi.ts';
-import type { Accommodation } from '../api/types/accommodation.ts';
-
-interface UseAccommodationsState {
-    accommodations: Accommodation[];
-    loading: boolean;
-    error?: string;
-}
-
-const initialState: UseAccommodationsState = {
-    accommodations: [],
-    loading: true
-};
+import type { Accommodation, AccommodationFormData } from '../api/types/accommodation.ts';
 
 const useAccommodations = () => {
-    const [state, setState] = useState(initialState);
+    const [accommodations, setAccommodations] = useState<Accommodation[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<Error | null>(null);
 
-    useEffect(() => {
-        accommodationApi
-            .findAll()
-            .then((response) => {
-                setState({
-                    accommodations: response.data.content || [],
-                    loading: false
-                });
-            })
-            .catch((error) => {
-                    console.log(error);
-                    setState({
-                        accommodations: [],
-                        loading: false,
-                        error: error.message
-                    });
-                }
-            );
+    const fetch = useCallback(async () => {
+        setLoading(true);
+        setError(null);
+
+        try {
+            const response = await accommodationApi.findAll();
+            setAccommodations(response.data.content || []);
+            setError(null);
+        } catch (err) {
+            setError(err instanceof Error ? err : new Error('An unknown error occurred.'));
+            setAccommodations([]);
+        } finally {
+            setLoading(false);
+        }
     }, []);
 
-    return state;
+    const onAdd = useCallback(async (data: AccommodationFormData) => {
+        try {
+            await accommodationApi.add(data);
+            await fetch();
+        } catch (err) {
+            setError(err instanceof Error ? err : new Error('Failed to create accommodation.'));
+        }
+    }, [fetch]);
+
+    const onEdit = useCallback(async (id: number, data: AccommodationFormData) => {
+        try {
+            await accommodationApi.edit(id.toString(), data);
+            await fetch();
+        } catch (err) {
+            setError(err instanceof Error ? err : new Error('Failed to update accommodation.'));
+        }
+    }, [fetch]);
+
+    const onDelete = useCallback(async (id: number) => {
+        try {
+            await accommodationApi.delete(id.toString());
+            await fetch();
+        } catch (err) {
+            setError(err instanceof Error ? err : new Error('Failed to delete accommodation.'));
+        }
+    }, [fetch]);
+
+    useEffect(() => {
+        void fetch();
+    }, [fetch]);
+
+    return { accommodations, loading, error, fetch, onAdd, onEdit, onDelete };
 };
 
 export default useAccommodations;

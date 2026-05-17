@@ -4,11 +4,12 @@ import type { Accommodation } from '../../api/types/accommodation.ts';
 
 interface AccommodationCardProps {
     accommodation: Accommodation;
-    onEdit?: (id: number) => void;
-    onDelete?: (id: number) => void;
+    onEdit?: () => void;
+    onDelete?: () => void;
+    canEdit?: boolean;
 }
 
-const AccommodationCard = ({ accommodation, onEdit, onDelete }: AccommodationCardProps) => {
+const AccommodationCard = ({ accommodation, onEdit, onDelete, canEdit = false }: AccommodationCardProps) => {
     const navigate = useNavigate();
 
     const handleViewDetails = () => {
@@ -53,25 +54,27 @@ const AccommodationCard = ({ accommodation, onEdit, onDelete }: AccommodationCar
                 >
                     View Details
                 </Button>
-                <Box sx={{ display: 'flex', gap: 1, width: '100%' }}>
-                    <Button
-                        fullWidth
-                        size="small"
-                        variant="outlined"
-                        onClick={() => onEdit?.(accommodation.id)}
-                    >
-                        Edit
-                    </Button>
-                    <Button
-                        fullWidth
-                        size="small"
-                        variant="outlined"
-                        color="error"
-                        onClick={() => onDelete?.(accommodation.id)}
-                    >
-                        Delete
-                    </Button>
-                </Box>
+                {canEdit && (
+                    <Box sx={{ display: 'flex', gap: 1, width: '100%' }}>
+                        <Button
+                            fullWidth
+                            size="small"
+                            variant="outlined"
+                            onClick={onEdit}
+                        >
+                            Edit
+                        </Button>
+                        <Button
+                            fullWidth
+                            size="small"
+                            variant="outlined"
+                            color="error"
+                            onClick={onDelete}
+                        >
+                            Delete
+                        </Button>
+                    </Box>
+                )}
             </CardActions>
         </Card>
     );
