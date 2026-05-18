@@ -12,6 +12,7 @@ import CountriesPage from './ui/pages/CountriesPage/CountriesPage.tsx';
 import CountryDetailsPage from './ui/pages/CountryDetailsPage/CountryDetailsPage.tsx';
 import UsersPage from './ui/pages/UsersPage/UsersPage.tsx';
 import UserDetailsPage from './ui/pages/UserDetailsPage/UserDetailsPage.tsx';
+import ReservationsPage from './ui/pages/ReservationsPage/ReservationsPage.tsx';
 import ProtectedRoute from './components/ProtectedRoute.tsx';
 import { AuthProvider } from './context/AuthContext.tsx';
 
@@ -90,6 +91,14 @@ function App() {
             element={
               <ProtectedRoute requiredRoles={['USER', 'ADMINISTRATOR']}>
                 <UserDetailsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/reservations"
+            element={
+              <ProtectedRoute requiredRoles={['USER', 'ADMINISTRATOR']}>
+                <ReservationsPage />
               </ProtectedRoute>
             }
           />

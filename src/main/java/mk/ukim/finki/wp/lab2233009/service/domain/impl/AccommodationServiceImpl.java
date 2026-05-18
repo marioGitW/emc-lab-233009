@@ -14,6 +14,7 @@ import mk.ukim.finki.wp.lab2233009.repository.AccommodationCategoryStatsViewRepo
 import mk.ukim.finki.wp.lab2233009.repository.AccommodationExtendedViewRepository;
 import mk.ukim.finki.wp.lab2233009.repository.AccommodationRepository;
 import mk.ukim.finki.wp.lab2233009.repository.AccommodationShortViewRepository;
+import mk.ukim.finki.wp.lab2233009.repository.ReservationRepository;
 import mk.ukim.finki.wp.lab2233009.service.domain.AccommodationService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -31,6 +32,7 @@ public class AccommodationServiceImpl implements AccommodationService {
     private final AccommodationCategoryStatsViewRepository accommodationCategoryStatsViewRepository;
     private final AccommodationActivityLogRepository accommodationActivityLogRepository;
     private final ApplicationEventPublisher applicationEventPublisher;
+    private final ReservationRepository reservationRepository;
 
     public AccommodationServiceImpl(
             AccommodationRepository accommodationRepository,
@@ -38,7 +40,8 @@ public class AccommodationServiceImpl implements AccommodationService {
             AccommodationExtendedViewRepository accommodationExtendedViewRepository,
             AccommodationCategoryStatsViewRepository accommodationCategoryStatsViewRepository,
             AccommodationActivityLogRepository accommodationActivityLogRepository,
-            ApplicationEventPublisher applicationEventPublisher
+            ApplicationEventPublisher applicationEventPublisher,
+            ReservationRepository reservationRepository
     ) {
         this.accommodationRepository = accommodationRepository;
         this.accommodationShortViewRepository = accommodationShortViewRepository;
@@ -46,6 +49,7 @@ public class AccommodationServiceImpl implements AccommodationService {
         this.accommodationCategoryStatsViewRepository = accommodationCategoryStatsViewRepository;
         this.accommodationActivityLogRepository = accommodationActivityLogRepository;
         this.applicationEventPublisher = applicationEventPublisher;
+        this.reservationRepository = reservationRepository;
     }
 
     @Override
@@ -113,7 +117,9 @@ public class AccommodationServiceImpl implements AccommodationService {
     }
 
     @Override
+    @Transactional
     public Optional<Accommodation> deleteById(Long id) {
+        reservationRepository.deleteByAccommodation_Id(id);
         Optional<Accommodation> accommodation = accommodationRepository.findById(id);
         accommodation.ifPresent(accommodationRepository::delete);
         return accommodation;

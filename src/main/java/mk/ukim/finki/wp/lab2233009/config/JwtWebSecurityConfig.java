@@ -108,6 +108,16 @@ public class JwtWebSecurityConfig {
                                 )
                                 .permitAll()
                                 .requestMatchers(
+                                        HttpMethod.GET,
+                                        "/api/reservations/**"
+                                )
+                                .authenticated()
+                                .requestMatchers(
+                                        HttpMethod.POST,
+                                        "/api/reservations/reserve"
+                                )
+                                .authenticated()
+                                .requestMatchers(
                                         "/api/user/me"
                                 )
                                 .authenticated()
@@ -128,7 +138,7 @@ public class JwtWebSecurityConfig {
                                 .hasRole("ADMINISTRATOR")
                                 .requestMatchers(
                                         HttpMethod.DELETE,
-                                        "/api/accommodations/*/delete",
+                                        "/api/accommodations/**",
                                         "/api/hosts/*/delete",
                                         "/api/countries/*/delete"
                                 )

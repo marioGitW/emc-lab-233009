@@ -4,10 +4,3 @@ export interface Host {
     surname: string;
     countryId: number;
 }
-
-export interface HostFormData {
-    name: string;
-    surname: string;
-    countryId: number;
-}
-

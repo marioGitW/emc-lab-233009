@@ -1,68 +1,100 @@
-import {Box, Button, Card, CardActions, CardContent, Typography} from '@mui/material';
-import {useNavigate} from 'react-router-dom';
-import type {Country} from '../../api/types/country.ts';
+import { Box, Button, Card, CardActions, CardContent, Typography, useTheme } from '@mui/material';
+import PublicIcon from '@mui/icons-material/Public';
+import InfoIcon from '@mui/icons-material/Info';
+import type { Country } from '../../api/types/country.ts';
 
 interface CountryCardProps {
     country: Country;
-    onEdit?: () => void;
-    onDelete?: () => void;
-    canEdit?: boolean;
+    onView?: (id: number) => void;
 }
 
-const CountryCard = ({country, onEdit, onDelete, canEdit = false}: CountryCardProps) => {
-    const navigate = useNavigate();
-
-    const handleViewDetails = () => {
-        navigate(`/countries/${country.id}`);
-    };
+const CountryCard = ({ country, onView }: CountryCardProps) => {
+    const theme = useTheme();
 
     return (
-        <Card sx={{height: '100%', display: 'flex', flexDirection: 'column', border: '1px solid #ddd'}}>
-            <CardContent sx={{flexGrow: 1}}>
-                <Typography variant="h6" sx={{mb: 2, fontWeight: 'bold'}}>
+        <Card
+            sx={{
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                position: 'relative',
+                overflow: 'hidden',
+                textAlign: 'center',
+                '&::before': {
+                    content: '""',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: 4,
+                    background: `linear-gradient(90deg, ${theme.palette.success.main}, ${theme.palette.primary.main})`,
+                },
+            }}
+        >
+            <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                {/* Icon */}
+                <Box sx={{ mb: 2 }}>
+                    <PublicIcon
+                        sx={{
+                            fontSize: { xs: '2.5rem', sm: '3rem' },
+                            color: 'primary.main',
+                        }}
+                    />
+                </Box>
+
+                {/* Country Name */}
+                <Typography
+                    variant="h6"
+                    sx={{
+                        fontWeight: 700,
+                        fontSize: { xs: '1rem', sm: '1.1rem' },
+                        mb: 1,
+                    }}
+                >
                     {country.name}
                 </Typography>
-                <Box sx={{mb: 2}}>
-                    <Typography variant="body2" sx={{mb: 1}}>
-                        <strong>Continent:</strong> {country.continent}
-                    </Typography>
-                </Box>
+
+                <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{
+                        fontSize: '0.8rem',
+                        fontWeight: 500,
+                        mb: 1
+                    }}
+                >
+                    {country.continent}
+                </Typography>
+
+                {/* ID */}
+                <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{
+                        fontSize: '0.8rem',
+                        fontWeight: 500
+                    }}
+                >
+                    ID: {country.id}
+                </Typography>
             </CardContent>
 
-            <CardActions sx={{gap: 1, p: 2, flexDirection: 'column'}}>
+            {/* Actions */}
+            <CardActions sx={{ justifyContent: 'center', p: 2, pt: 1 }}>
                 <Button
-                    fullWidth
+                    startIcon={<InfoIcon />}
                     variant="contained"
-                    onClick={handleViewDetails}
-                    sx={{backgroundColor: '#1976d2', color: 'white'}}
+                    size="small"
+                    onClick={() => onView?.(country.id)}
+                    sx={{
+                        fontWeight: 600,
+                    }}
                 >
-                    View Details
+                    Explore
                 </Button>
-                {canEdit && (
-                    <Box sx={{display: 'flex', gap: 1, width: '100%'}}>
-                        <Button
-                            fullWidth
-                            size="small"
-                            variant="outlined"
-                            onClick={onEdit}
-                        >
-                            Edit
-                        </Button>
-                        <Button
-                            fullWidth
-                            size="small"
-                            variant="outlined"
-                            color="error"
-                            onClick={onDelete}
-                        >
-                            Delete
-                        </Button>
-                    </Box>
-                )}
             </CardActions>
         </Card>
     );
 };
 
 export default CountryCard;
-
